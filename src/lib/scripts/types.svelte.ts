@@ -1,18 +1,43 @@
 import Decimal from "break_eternity.js";
 
-export const valueTypes = {
-    CONSTANT: "CONSTANT",
-    DOWN: "DOWN"
-} as const;
+// export class Value {
+//     type: valueTypes
+//     value: Decimal
 
-export type valueTypes = typeof valueTypes[keyof typeof valueTypes];
+//     constructor(type: valueTypes, value: Decimal) {
+//         this.type = type
+//         this.value = value
+//     }
+// }
 
-export class Value {
-    type: valueTypes
-    value: Decimal
+export class Constant {
+    value: () => Decimal
 
-    constructor(type: valueTypes, value: Decimal) {
-        this.type = type
+    constructor(value: number | Decimal | string) {
+        this.value = () => {return new Decimal(value)}
+    }
+}
+
+export class Special {
+    value: () => Decimal
+
+    constructor(value: () => Decimal) {
         this.value = value
+    }
+}
+
+export type Value = Special | Constant; 
+
+export class Operator {
+    name: string;
+    effect: (a: Decimal, b: Decimal, ...args: Decimal[]) => Decimal = (a, b) => {return a};
+    symbol: any;
+    unlocked: boolean;
+
+    constructor(name: string, effect: (a: Decimal, b: Decimal, ...args: Decimal[]) => Decimal, symbol: any, startUnlocked: boolean) {
+        this.name = name
+        this.effect = effect
+        this.symbol = symbol
+        this.unlocked = startUnlocked
     }
 }

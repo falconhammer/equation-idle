@@ -5,9 +5,11 @@
 
     let props = $props()
 
-    let currentZ = $state(ui.nextZ())
+    let currentZ = $derived(ui.nextZ())
 
+    // svelte-ignore non_reactive_update
     let width : number;
+    // svelte-ignore non_reactive_update
     let height : number;
 
     let left = $state(40);
